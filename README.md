@@ -1,4 +1,4 @@
-# Automate Monthly Workbook
+# Monthly Workbook Automation
 
 ## Description
 This project automates the creation of the monthly performance workbook for all AKG sites.  
