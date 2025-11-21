@@ -25,7 +25,7 @@ create or replace task IN_MONTH_AGGREGATED_MILESTONES_TASK
     warehouse = compute_wh
     schedule = 'USING CRON 30 8 * * MON-FRI UTC'
     as
-create or replace table DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.IN_MONTH_AGGREGATED_MILESTONES
+create or replace table DW.BI.IN_MONTH_AGGREGATED_MILESTONES
 as(
 select
 site_name as Site,
@@ -33,13 +33,13 @@ YEAR(start_date) as Year,
 MONTH(start_date) as Month,
 case when PO_DATE >= '2024-07-01' then 'EX' else 'OG' end as Contract,
 'Starts' as Milestone_Type,
-COUNT(VW_DAILY_STATS.participant_id) as Count
+COUNT(DAILY_STATS.participant_id) as Count
 
-from DATA_WAREHOUSE.STAGING.VW_DAILY_REPORT
+from DW.STAGING.DAILY_REPORT
 
-left join DATA_WAREHOUSE.STAGING.VW_DAILY_STATS on VW_DAILY_STATS.participant_id = VW_DAILY_REPORT.participant_id
+left join DW.STAGING.DAILY_STATS on DAILY_STATS.participant_id = DAILY_REPORT.participant_id
 
-where  VW_DAILY_REPORT.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
+where  DAILY_REPORT.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
 and site_name not in ('Restricted Area', 'TEST LOCATION ONLY','AKG Atherstone','CSC Cold Referrals')
 group by 1,2,3,4
 
@@ -51,13 +51,13 @@ YEAR(MILESTONE_JOB_OUT_DATE) as Year,
 MONTH(MILESTONE_JOB_OUT_DATE) as Month,
 case when PO_DATE >= '2024-07-01' then 'EX' else 'OG' end as Contract,
 'JO' as Milestone_Type,
-COUNT(VW_DAILY_STATS.participant_id) as Count
+COUNT(DAILY_STATS.participant_id) as Count
 
-from DATA_WAREHOUSE.STAGING.VW_DAILY_REPORT
+from DW.STAGING.DAILY_REPORT
 
-left join DATA_WAREHOUSE.STAGING.VW_DAILY_STATS on VW_DAILY_STATS.participant_id = VW_DAILY_REPORT.participant_id
+left join DW.STAGING.DAILY_STATS on DAILY_STATS.participant_id = DAILY_REPORT.participant_id
 
-where MILESTONE_JOB_OUT = 'Yes' and VW_DAILY_REPORT.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
+where MILESTONE_JOB_OUT = 'Yes' and DAILY_REPORT.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
 and site_name not in ('Restricted Area', 'TEST LOCATION ONLY','AKG Atherstone','CSC Cold Referrals')
 
 group by 1,2,3,4
@@ -70,13 +70,13 @@ YEAR(MILESTONE_COMM_EARN_DATE) as Year,
 MONTH(MILESTONE_COMM_EARN_DATE) as Month,
 case when PO_DATE >= '2024-07-01' then 'EX' else 'OG' end as Contract,
 'FE' as Milestone_Type,
-COUNT(VW_DAILY_STATS.participant_id) as Count
+COUNT(DAILY_STATS.participant_id) as Count
 
-from DATA_WAREHOUSE.STAGING.VW_DAILY_REPORT
+from DW.STAGING.DAILY_REPORT
 
-left join DATA_WAREHOUSE.STAGING.VW_DAILY_STATS on VW_DAILY_STATS.participant_id = VW_DAILY_REPORT.participant_id
+left join DW.STAGING.DAILY_STATS on DAILY_STATS.participant_id = DAILY_REPORT.participant_id
 
-where milestone_comm_earn = 'Yes' and VW_DAILY_REPORT.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
+where milestone_comm_earn = 'Yes' and DAILY_REPORT.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
 and site_name not in ('Restricted Area', 'TEST LOCATION ONLY','AKG Atherstone','CSC Cold Referrals')
 
 group by 1,2,3,4
@@ -89,13 +89,13 @@ YEAR(first_time_job_start_date) as Year,
 MONTH(first_time_job_start_date) as Month,
 case when PO_DATE >= '2024-07-01' then 'EX' else 'OG' end as Contract,
 'JS' as Milestone_Type,
-COUNT(VW_DAILY_STATS.participant_id) as Count
+COUNT(DAILY_STATS.participant_id) as Count
 
-from DATA_WAREHOUSE.STAGING.VW_DAILY_REPORT
+from DW.STAGING.DAILY_REPORT
 
-left join DATA_WAREHOUSE.STAGING.VW_DAILY_STATS on VW_DAILY_STATS.participant_id = VW_DAILY_REPORT.participant_id
+left join DW.STAGING.DAILY_STATS on DAILY_STATS.participant_id = DAILY_REPORT.participant_id
 
-where first_time_job_start = 'Yes' and VW_DAILY_REPORT.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
+where first_time_job_start = 'Yes' and DAILY_REPORT.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
 and site_name not in ('Restricted Area', 'TEST LOCATION ONLY','AKG Atherstone','CSC Cold Referrals')
 
 group by 1,2,3,4
@@ -111,7 +111,7 @@ order by 1,2,3,5
 <summary><strong>Target Methodology Script</strong></summary>
    
 ```sql
-create or replace table DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.OG_SITE_WATERFALL
+create or replace table DW.BI.OG_SITE_WATERFALL
 as(
 select
 Site,
@@ -126,7 +126,7 @@ where Contract = 'OG'
 order by 1,2,3
 );
 
-create or replace table DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.EX_SITE_WATERFALL
+create or replace table DW.BI.EX_SITE_WATERFALL
 AS(
 select
 Site,
@@ -158,7 +158,7 @@ order by 1,2,3,4,5
 );
 
 
-create or replace table DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.OG_IN_MONTH_STATS
+create or replace table DW.BI.OG_IN_MONTH_STATS
 as(
 with Pivoted_Milestones AS (
   SELECT
@@ -170,7 +170,7 @@ with Pivoted_Milestones AS (
     MAX(CASE WHEN Milestone_Type = 'JS'     THEN Count END)        AS JS_Actual,
     MAX(CASE WHEN Milestone_Type = 'FE'     THEN Count END)        AS FE_Actual,
     MAX(CASE WHEN Milestone_Type = 'JO'     THEN Count END)        AS Outcome_Actual
-  FROM DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.IN_MONTH_AGGREGATED_MILESTONES
+  FROM DW.BUSINESS_INTELLIGENCE.IN_MONTH_AGGREGATED_MILESTONES
   WHERE Contract = 'OG' 
   GROUP BY Site, Year, Month, Contract
 )
@@ -196,7 +196,7 @@ sum(case when w.in_month_year = c.Year  and w.in_month_month = c.month then w.Va
 (sum(case when w.in_month_year = c.Year  and w.in_month_month = c.month then w.Value else null end)) * (0.25/0.34) as Outcome_MRNO,
 'OG' as Contract
 
-from DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.CALENDAR c
+from DW.BUSINESS_INTELLIGENCE.CALENDAR c
 LEFT JOIN Pivoted_Milestones p ON p.Site  = c.Site AND p.Year  = c.Year AND p.Month = c.Month
 left join OG_SITE_WATERFALL w on c.Site = w.Site
 where c.date >= '2021-01-07' and c.date < TO_CHAR(DATE_TRUNC('month', CURRENT_DATE), 'YYYY-DD-MM')
@@ -204,7 +204,7 @@ group by 1,2,3,4,5,7,9,12
 order by 1,2,3
 );
 
-create or replace table DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.EX_IN_MONTH_STATS
+create or replace table DW.BI.EX_IN_MONTH_STATS
 as(
 WITH Pivoted_Milestones AS (
   SELECT
@@ -216,7 +216,7 @@ WITH Pivoted_Milestones AS (
     MAX(CASE WHEN Milestone_Type = 'JS'     THEN Count END)        AS JS_Actual,
     MAX(CASE WHEN Milestone_Type = 'FE'     THEN Count END)        AS FE_Actual,
     MAX(CASE WHEN Milestone_Type = 'JO'     THEN Count END)        AS Outcome_Actual
-  FROM DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.IN_MONTH_AGGREGATED_MILESTONES
+  FROM DW.BUSINESS_INTELLIGENCE.IN_MONTH_AGGREGATED_MILESTONES
   WHERE Contract = 'EX' 
   GROUP BY Site, Year, Month, Contract
 )
@@ -242,7 +242,7 @@ sum(case when w.in_month_year = c.Year  and w.in_month_month = c.month then w."V
 (sum(case when w.in_month_year = c.Year  and w.in_month_month = c.month then w."Value" else null end)) * (0.25/0.34) as Outcome_MRNO,
 'EX' as "Contract"
 
-from DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.CALENDAR c
+from DW.BUSINESS_INTELLIGENCE.CALENDAR c
 LEFT JOIN Pivoted_Milestones p ON p.Site  = c.Site AND p.Year  = c.Year AND p.Month = c.Month
 left join EX_SITE_WATERFALL w on c.Site = w.Site
 where c.date >= '2024-01-07' and c.date < TO_CHAR(DATE_TRUNC('month', CURRENT_DATE), 'YYYY-DD-MM')
@@ -252,7 +252,7 @@ order by 1,2,3
 
 
 
-create or replace table DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.IN_MONTH_STATS_UNION
+create or replace table DW.BI.IN_MONTH_STATS_UNION
 as(
 select 
 case when Site like '%AKG%' then 'AKG' else 'Delivery Partners' end as "Region",
@@ -302,7 +302,7 @@ from EX_IN_MONTH_STATS
 <summary><strong>Presentation Script & Dashboard Screenshots</strong></summary>
    
 ```sql
-create or replace table DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.TEAM_VIEWER
+create or replace table DW.BI.TEAM_VIEWER
 as(
 WITH AggregatedStats AS (
     SELECT
