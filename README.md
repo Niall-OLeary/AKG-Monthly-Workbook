@@ -108,7 +108,7 @@ order by 1,2,3,5
 2. **Calculates Targets**  
    - Generates targets using the DWP starts waterfall methodology across two distinct contracts (OG and EX).
 <details> 
-<summary><strong>Snowpipe Script</strong></summary>
+<summary><strong>Target Methodology Script</strong></summary>
    
 ```sql
 create or replace table DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.OG_SITE_WATERFALL
@@ -299,7 +299,7 @@ from EX_IN_MONTH_STATS
 3. **Creates Presentation Tables**  
    - Populates tables specifically designed for Power BI visualisation.  
 <details> 
-<summary><strong>Snowpipe Script</strong></summary>
+<summary><strong>Presentation Script & Dashboard Screenshots</strong></summary>
    
 ```sql
 create or replace table DATA_WAREHOUSE.BUSINESS_INTELLIGENCE.TEAM_VIEWER
@@ -420,6 +420,8 @@ ORDER BY
     Provider, year, month
 );
 ```
+<img width="1425" height="783" alt="{0F70C861-151C-4679-AE4C-20B5D0FE8F7B}" src="https://github.com/user-attachments/assets/434fe807-b70a-47e8-a3d6-020b6c0a5e9f" />
+<img width="1423" height="778" alt="{C6474689-DBA9-4872-ABD4-635A1E772849}" src="https://github.com/user-attachments/assets/86232866-79ed-4c1b-8219-094ec852277a" />
 
 </details>  
 
