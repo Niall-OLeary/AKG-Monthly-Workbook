@@ -33,13 +33,13 @@ YEAR(start_date) as Year,
 MONTH(start_date) as Month,
 case when PO_DATE >= '2024-07-01' then 'EX' else 'OG' end as Contract,
 'Starts' as Milestone_Type,
-COUNT(DAILY_STATS.participant_id) as Count
+COUNT(DS.participant_id) as Count
 
-from DW.STAGING.DAILY_REPORT
+from DW.STAGING.DR
 
-left join DW.STAGING.DAILY_STATS on DAILY_STATS.participant_id = DAILY_REPORT.participant_id
+left join DW.STAGING.DS on DS.participant_id = DR.participant_id
 
-where  DAILY_REPORT.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
+where  DR.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
 and site_name not in ('Restricted Area', 'TEST LOCATION ONLY','AKG Atherstone','CSC Cold Referrals')
 group by 1,2,3,4
 
@@ -51,13 +51,13 @@ YEAR(MILESTONE_JOB_OUT_DATE) as Year,
 MONTH(MILESTONE_JOB_OUT_DATE) as Month,
 case when PO_DATE >= '2024-07-01' then 'EX' else 'OG' end as Contract,
 'JO' as Milestone_Type,
-COUNT(DAILY_STATS.participant_id) as Count
+COUNT(DS.participant_id) as Count
 
-from DW.STAGING.DAILY_REPORT
+from DW.STAGING.DR
 
-left join DW.STAGING.DAILY_STATS on DAILY_STATS.participant_id = DAILY_REPORT.participant_id
+left join DW.STAGING.DS on DS.participant_id = DR.participant_id
 
-where MILESTONE_JOB_OUT = 'Yes' and DAILY_REPORT.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
+where MILESTONE_JOB_OUT = 'Yes' and DR.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
 and site_name not in ('Restricted Area', 'TEST LOCATION ONLY','AKG Atherstone','CSC Cold Referrals')
 
 group by 1,2,3,4
@@ -70,13 +70,13 @@ YEAR(MILESTONE_COMM_EARN_DATE) as Year,
 MONTH(MILESTONE_COMM_EARN_DATE) as Month,
 case when PO_DATE >= '2024-07-01' then 'EX' else 'OG' end as Contract,
 'FE' as Milestone_Type,
-COUNT(DAILY_STATS.participant_id) as Count
+COUNT(DS.participant_id) as Count
 
-from DW.STAGING.DAILY_REPORT
+from DW.STAGING.DR
 
-left join DW.STAGING.DAILY_STATS on DAILY_STATS.participant_id = DAILY_REPORT.participant_id
+left join DW.STAGING.DS on DS.participant_id = DR.participant_id
 
-where milestone_comm_earn = 'Yes' and DAILY_REPORT.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
+where milestone_comm_earn = 'Yes' and DR.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
 and site_name not in ('Restricted Area', 'TEST LOCATION ONLY','AKG Atherstone','CSC Cold Referrals')
 
 group by 1,2,3,4
@@ -89,13 +89,13 @@ YEAR(first_time_job_start_date) as Year,
 MONTH(first_time_job_start_date) as Month,
 case when PO_DATE >= '2024-07-01' then 'EX' else 'OG' end as Contract,
 'JS' as Milestone_Type,
-COUNT(DAILY_STATS.participant_id) as Count
+COUNT(DS.participant_id) as Count
 
-from DW.STAGING.DAILY_REPORT
+from DW.STAGING.DR
 
-left join DW.STAGING.DAILY_STATS on DAILY_STATS.participant_id = DAILY_REPORT.participant_id
+left join DW.STAGING.DS on DS.participant_id = DR.participant_id
 
-where first_time_job_start = 'Yes' and DAILY_REPORT.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
+where first_time_job_start = 'Yes' and DR.participant_id is not null and site_name is not null and start_date is not null and actual_start = 'Start'
 and site_name not in ('Restricted Area', 'TEST LOCATION ONLY','AKG Atherstone','CSC Cold Referrals')
 
 group by 1,2,3,4
