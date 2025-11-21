@@ -2,7 +2,7 @@
 
 ## Description
 This project automates the creation of the monthly performance workbook for all AKG sites.  
-It aggregates and calculates key metrics, generates presentation tables, and feeds data into Power BI for visualization.  
+It aggregates and calculates key metrics, generates presentation tables, and feeds data into Power BI for visualisation.  
 The solution replaces a manual 2–3 day process with a fully automated pipeline that now runs in under 1 minute.
 
 ## Current Business Problem
