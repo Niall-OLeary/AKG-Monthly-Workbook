@@ -170,7 +170,7 @@ with Pivoted_Milestones AS (
     MAX(CASE WHEN Milestone_Type = 'JS'     THEN Count END)        AS JS_Actual,
     MAX(CASE WHEN Milestone_Type = 'FE'     THEN Count END)        AS FE_Actual,
     MAX(CASE WHEN Milestone_Type = 'JO'     THEN Count END)        AS Outcome_Actual
-  FROM DW.BUSINESS_INTELLIGENCE.IN_MONTH_AGGREGATED_MILESTONES
+  FROM DW.BI.IN_MONTH_AGGREGATED_MILESTONES
   WHERE Contract = 'OG' 
   GROUP BY Site, Year, Month, Contract
 )
@@ -196,7 +196,7 @@ sum(case when w.in_month_year = c.Year  and w.in_month_month = c.month then w.Va
 (sum(case when w.in_month_year = c.Year  and w.in_month_month = c.month then w.Value else null end)) * (0.25/0.34) as Outcome_MRNO,
 'OG' as Contract
 
-from DW.BUSINESS_INTELLIGENCE.CALENDAR c
+from DW.BI.CALENDAR c
 LEFT JOIN Pivoted_Milestones p ON p.Site  = c.Site AND p.Year  = c.Year AND p.Month = c.Month
 left join OG_SITE_WATERFALL w on c.Site = w.Site
 where c.date >= '2021-01-07' and c.date < TO_CHAR(DATE_TRUNC('month', CURRENT_DATE), 'YYYY-DD-MM')
@@ -216,7 +216,7 @@ WITH Pivoted_Milestones AS (
     MAX(CASE WHEN Milestone_Type = 'JS'     THEN Count END)        AS JS_Actual,
     MAX(CASE WHEN Milestone_Type = 'FE'     THEN Count END)        AS FE_Actual,
     MAX(CASE WHEN Milestone_Type = 'JO'     THEN Count END)        AS Outcome_Actual
-  FROM DW.BUSINESS_INTELLIGENCE.IN_MONTH_AGGREGATED_MILESTONES
+  FROM DW.BI.IN_MONTH_AGGREGATED_MILESTONES
   WHERE Contract = 'EX' 
   GROUP BY Site, Year, Month, Contract
 )
@@ -242,7 +242,7 @@ sum(case when w.in_month_year = c.Year  and w.in_month_month = c.month then w."V
 (sum(case when w.in_month_year = c.Year  and w.in_month_month = c.month then w."Value" else null end)) * (0.25/0.34) as Outcome_MRNO,
 'EX' as "Contract"
 
-from DW.BUSINESS_INTELLIGENCE.CALENDAR c
+from DW.BI.CALENDAR c
 LEFT JOIN Pivoted_Milestones p ON p.Site  = c.Site AND p.Year  = c.Year AND p.Month = c.Month
 left join EX_SITE_WATERFALL w on c.Site = w.Site
 where c.date >= '2024-01-07' and c.date < TO_CHAR(DATE_TRUNC('month', CURRENT_DATE), 'YYYY-DD-MM')
